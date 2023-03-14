@@ -23,7 +23,14 @@ RUN test -d ${REMOTE_SOURCES_DIR}/cachito-gomod-with-deps || exit 1; \
  && source ${REMOTE_SOURCES_DIR}/cachito-gomod-with-deps/cachito.env \
  && yarn && yarn build
 
-FROM registry.redhat.io/ubi8/nginx-120:1-84.1675799502
+FROM registry.ci.openshift.org/ocp/4.14:base
+
+ENV NGINX_VERSION=1.20
+RUN yum -y module enable nginx:$NGINX_VERSION && \
+    INSTALL_PKGS="nss_wrapper bind-utils gettext hostname nginx nginx-mod-stream nginx-mod-http-perl" && \
+    yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    yum -y clean all --enablerepo='*'
 
 USER 1001
 
