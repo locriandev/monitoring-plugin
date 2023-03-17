@@ -27,7 +27,7 @@ FROM registry.ci.openshift.org/ocp/4.14:base
 
 ENV NGINX_VERSION=1.20
 RUN yum -y module enable nginx:$NGINX_VERSION && \
-    INSTALL_PKGS="nss_wrapper bind-utils gettext hostname nginx nginx-mod-stream nginx-mod-http-perl" && \
+    INSTALL_PKGS="nss_wrapper bind-utils gettext hostname nginx" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*'
